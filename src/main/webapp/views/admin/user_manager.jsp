@@ -85,6 +85,11 @@
 				</div>
 				<div class="form-check form-check-inline mt-1">
 					<input class="form-check-input" type="radio" name="role"
+						id="rolePendingWriter" value="3"> <label
+						class="form-check-label text-warning" for="rolePendingWriter">Chờ duyệt Tác giả</label>
+				</div>
+				<div class="form-check form-check-inline mt-1">
+					<input class="form-check-input" type="radio" name="role"
 						id="roleWriter" value="1"> <label
 						class="form-check-label" for="roleWriter">Người viết bài</label>
 				</div>
@@ -92,6 +97,11 @@
 					<input class="form-check-input" type="radio" name="role"
 						id="roleAdmin" value="2"> <label
 						class="form-check-label" for="roleAdmin">Quản trị viên (Admin)</label>
+				</div>
+				<div class="form-check form-check-inline mt-1">
+					<input class="form-check-input" type="radio" name="role"
+						id="roleLocked" value="-1"> <label
+						class="form-check-label text-danger" for="roleLocked">Khóa tài khoản</label>
 				</div>
 			</div>
 
@@ -152,6 +162,8 @@ function editUser(btn) {
     let role = btn.getAttribute('data-role');
     if(role === '2') document.getElementById('roleAdmin').checked = true;
     else if(role === '1') document.getElementById('roleWriter').checked = true;
+    else if(role === '3') document.getElementById('rolePendingWriter').checked = true;
+    else if(role === '-1') document.getElementById('roleLocked').checked = true;
     else document.getElementById('roleUser').checked = true;
 }
 </script>
@@ -185,6 +197,8 @@ function editUser(btn) {
 								<c:choose>
 									<c:when test="${item.role == 2}"><span class="badge bg-danger">Admin</span></c:when>
 									<c:when test="${item.role == 1}"><span class="badge bg-success">Phóng viên</span></c:when>
+									<c:when test="${item.role == 3}"><span class="badge bg-warning text-dark">Chờ duyệt Tác giả</span></c:when>
+									<c:when test="${item.role == -1}"><span class="badge bg-dark">Bị khóa</span></c:when>
 									<c:otherwise><span class="badge bg-secondary">Độc giả</span></c:otherwise>
 								</c:choose>
 							</td>

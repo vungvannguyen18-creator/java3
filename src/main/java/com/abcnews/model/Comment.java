@@ -2,20 +2,18 @@ package com.abcnews.model;
 
 public class Comment {
     private int id;
-    private int userId;
-    private int newsId;
+    private String userId;
+    private String newsId;
     private String content;
-    private boolean status;
 
     public Comment() {
     }
 
-    public Comment(int id, int userId, int newsId, String content, boolean status) {
+    public Comment(int id, String userId, String newsId, String content) {
         this.id = id;
         this.userId = userId;
         this.newsId = newsId;
         this.content = content;
-        this.status = status;
     }
 
     public int getId() {
@@ -26,19 +24,19 @@ public class Comment {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getNewsId() {
+    public String getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(int newsId) {
+    public void setNewsId(String newsId) {
         this.newsId = newsId;
     }
 
@@ -48,13 +46,5 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 }

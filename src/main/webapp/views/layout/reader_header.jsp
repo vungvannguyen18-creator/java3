@@ -42,8 +42,16 @@
 				<c:choose>
 					<c:when test="${not empty sessionScope.currentUser}">
 						<span class="text-white me-3">Xin chào, <strong>${sessionScope.currentUser.fullname}</strong></span>
-						<c:if test="${sessionScope.currentUser.role > 0}">
+						<c:if test="${sessionScope.currentUser.role == 1 or sessionScope.currentUser.role == 2}">
 							<a href="${pageContext.request.contextPath}/admin/news" class="btn btn-sm btn-outline-light me-2">Trang Quản Trị</a>
+						</c:if>
+						<c:if test="${sessionScope.currentUser.role == 0}">
+							<form action="${pageContext.request.contextPath}/reader/author_request" method="post" class="d-inline">
+								<button type="submit" class="btn btn-sm btn-warning me-2" onclick="return confirm('Bạn có chắc muốn đăng ký trở thành người viết bài?');">Đăng ký tác giả</button>
+							</form>
+						</c:if>
+						<c:if test="${sessionScope.currentUser.role == 3}">
+							<button class="btn btn-sm btn-secondary me-2" disabled>Đang chờ duyệt tác giả</button>
 						</c:if>
 						<a href="${pageContext.request.contextPath}/auth/logout" class="btn btn-sm btn-danger">Đăng xuất</a>
 					</c:when>

@@ -30,13 +30,18 @@ public class LoginServlet extends HttpServlet {
         User user = userDAO.login(id, password);
         
         if (user != null) {
-            HttpSession session = req.getSession();
-            session.setAttribute("currentUser", user);
-            
-            if (user.getRole() == 0) {
-                resp.sendRedirect(req.getContextPath() + "/reader/home");
+            if (user.getRole() == -1) {
+                req.setAttribute("error", "Tài khoản của bạn đã bị khóa!");
+                req.getRequestDispatcher("/views/auth/login.jsp").forward(req, resp);
             } else {
-                resp.sendRedirect(req.getContextPath() + "/admin/news");
+                HttpSession session = req.getSession();
+                session.setAttribute("currentUser", user);
+                
+                if (user.getRole() == 0 || user.getRole() == 3) {
+                    resp.sendRedirect(req.getContextPath() + "/reader/home");
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/admin/news");
+                }
             }
         } else {
             req.setAttribute("error", "Sai mã đăng nhập hoặc mật khẩu!");

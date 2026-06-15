@@ -48,8 +48,20 @@ public class NewsManagerServlet extends HttpServlet {
 
         List<News> listNews;
         if (currentUser.getRole() == 2) {
-            // Admin can see all
-            listNews = newsDAO.findAll(); 
+            String statusParam = req.getParameter("status");
+            if (statusParam != null && !statusParam.isEmpty()) {
+                // Lọc theo trạng thái
+                List<News> allNews = newsDAO.findAll();
+                listNews = new java.util.ArrayList<>();
+                int targetStatus = Integer.parseInt(statusParam);
+                for (News n : allNews) {
+                    if (n.getStatus() == targetStatus) {
+                        listNews.add(n);
+                    }
+                }
+            } else {
+                listNews = newsDAO.findAll(); 
+            }
         } else {
             // Writer can only see their own
             listNews = newsDAO.findByAuthor(currentUser.getId());
@@ -104,7 +116,12 @@ public class NewsManagerServlet extends HttpServlet {
                 news.setHome(req.getParameter("home") != null);
                 
                 if (currentUser.getRole() == 2) {
-                    news.setStatus(3); // Admin tạo thì tự động Công khai
+                    String statusStr = req.getParameter("status");
+                    if (statusStr != null && !statusStr.isEmpty()) {
+                        news.setStatus(Integer.parseInt(statusStr));
+                    } else {
+                        news.setStatus(3); // Mặc định công khai
+                    }
                 } else {
                     news.setStatus(1); // Phóng viên tạo thì mặc định Chờ duyệt
                 }
@@ -141,6 +158,11 @@ public class NewsManagerServlet extends HttpServlet {
                     
                     if (currentUser.getRole() != 2) {
                         news.setStatus(1); // Phóng viên sửa thì quay về Chờ duyệt
+                    } else {
+                        String statusStr = req.getParameter("status");
+                        if (statusStr != null && !statusStr.isEmpty()) {
+                            news.setStatus(Integer.parseInt(statusStr));
+                        }
                     }
                     
                     newsDAO.update(news);

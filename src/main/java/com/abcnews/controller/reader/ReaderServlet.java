@@ -2,8 +2,11 @@ package com.abcnews.controller.reader;
 
 import com.abcnews.dao.CategoryDAO;
 import com.abcnews.dao.NewsDAO;
+import com.abcnews.dao.InteractiveDAO;
 import com.abcnews.model.Category;
 import com.abcnews.model.News;
+import com.abcnews.model.Comment;
+import com.abcnews.model.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +23,7 @@ public class ReaderServlet extends HttpServlet {
 
     private NewsDAO newsDAO = new NewsDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
+    private InteractiveDAO interactiveDAO = new InteractiveDAO();
 
     @SuppressWarnings("unchecked")
     @Override
@@ -128,6 +132,17 @@ public class ReaderServlet extends HttpServlet {
                     }
                 }
                 req.setAttribute("relatedNews", relatedNews);
+
+                // Fetch comments
+                List<Comment> comments = interactiveDAO.getCommentsByNewsId(id);
+                req.setAttribute("comments", comments);
+
+                // Fetch favorite status
+                User currentUser = (User) req.getSession().getAttribute("currentUser");
+                if (currentUser != null) {
+                    boolean isFavorite = interactiveDAO.checkFavorite(currentUser.getId(), id);
+                    req.setAttribute("isFavorite", isFavorite);
+                }
 
                 req.setAttribute("news", news);
                 req.getRequestDispatcher("/views/reader/news_detail.jsp").forward(req, resp);

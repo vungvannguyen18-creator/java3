@@ -50,7 +50,7 @@
 					</div>
 				</div>
 				<div class="col-md-4 mt-4 d-flex align-items-center">
-					<div class="form-check">
+					<div class="form-check me-3">
 						<input class="form-check-input" type="checkbox" name="home"
 							id="homeCheck" value="true"> <label
 							class="form-check-label" for="homeCheck">Hiển thị trang
@@ -58,6 +58,19 @@
 					</div>
 				</div>
 			</div>
+
+			<c:if test="${sessionScope.currentUser.role == 2}">
+			<div class="row mb-3">
+				<div class="col-md-4">
+					<label class="form-label">Trạng thái (Chỉ Admin)</label>
+					<select class="form-select" name="status">
+						<option value="3">Đã duyệt (Công khai)</option>
+						<option value="1">Chờ duyệt</option>
+						<option value="2">Từ chối</option>
+					</select>
+				</div>
+			</div>
+			</c:if>
 
 			<div class="mb-3">
 				<label class="form-label">Nội dung</label>
@@ -95,6 +108,7 @@
 						<th>Mã Loại tin</th>
 						<th>Lượt xem</th>
 						<th>Tác giả</th>
+						<th>Trạng thái</th>
 						<th>Trang nhất</th>
 						<th>Thao tác</th>
 					</tr>
@@ -107,6 +121,13 @@
 						<td>${item.categoryId}</td>
 						<td>${item.viewCount}</td>
 						<td>${item.author}</td>
+						<td>
+							<c:choose>
+								<c:when test="${item.status == 3}"><span class="badge bg-success">Đã duyệt</span></c:when>
+								<c:when test="${item.status == 2}"><span class="badge bg-danger">Từ chối</span></c:when>
+								<c:otherwise><span class="badge bg-warning text-dark">Chờ duyệt</span></c:otherwise>
+							</c:choose>
+						</td>
 						<td>${item.home ? 'Trang nhất' : 'Bình thường'}</td>
 						<td>
 							<button type="button" class="btn btn-sm btn-info text-white" 
@@ -114,7 +135,8 @@
 								data-title="<c:out value='${item.title}'/>" 
 								data-category="${item.categoryId}" 
 								data-content="<c:out value='${item.content}'/>"
-								data-home="${item.home}" 
+								data-home="${item.home}"
+								data-status="${item.status}" 
 								onclick="editNews(this)"><i class="bi bi-pencil"></i></button>
 							<form action="${pageContext.request.contextPath}/admin/news/delete" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tin này?');">
 								<input type="hidden" name="id" value="${item.id}">
@@ -146,6 +168,11 @@
         CKEDITOR.instances.contentEditor.setData(content);
         
         document.querySelector('input[name="home"]').checked = (btn.getAttribute('data-home') === 'true');
+        
+        var statusSelect = document.querySelector('select[name="status"]');
+        if (statusSelect) {
+            statusSelect.value = btn.getAttribute('data-status');
+        }
     }
 </script>
 

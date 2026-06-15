@@ -2,13 +2,13 @@ package com.abcnews.model;
 
 public class Favorite {
     private int id;
-    private int userId;
-    private int newsId;
+    private String userId;
+    private String newsId;
 
     public Favorite() {
     }
 
-    public Favorite(int id, int userId, int newsId) {
+    public Favorite(int id, String userId, String newsId) {
         this.id = id;
         this.userId = userId;
         this.newsId = newsId;
@@ -22,19 +22,19 @@ public class Favorite {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getNewsId() {
+    public String getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(int newsId) {
+    public void setNewsId(String newsId) {
         this.newsId = newsId;
     }
 }

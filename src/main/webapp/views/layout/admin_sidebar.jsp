@@ -10,10 +10,11 @@
 				target="_blank"> <i class="bi bi-house-door me-2"></i> Xem trang
 					đọc giả
 			</a></li>
-			<h6
-				class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
-				<span>Quản lý</span>
-			</h6>
+			<li>
+				<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+					<span>Quản lý</span>
+				</h6>
+			</li>
 			<li class="nav-item"><a class="nav-link"
 				href="${pageContext.request.contextPath}/admin/news">
 					<i class="bi bi-newspaper me-2"></i> Quản lý Tin Tức
@@ -22,6 +23,10 @@
 			<li class="nav-item"><a class="nav-link"
 				href="${pageContext.request.contextPath}/admin/category">
 					<i class="bi bi-tags me-2"></i> Quản lý Loại Tin
+			</a></li>
+			<li class="nav-item"><a class="nav-link"
+				href="${pageContext.request.contextPath}/admin/news?status=1">
+					<i class="bi bi-card-checklist me-2"></i> Bài Viết Chờ Duyệt
 			</a></li>
 			<li class="nav-item"><a class="nav-link"
 				href="${pageContext.request.contextPath}/admin/user">
