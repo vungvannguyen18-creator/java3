@@ -116,8 +116,7 @@
 				</div>
 
 				<div class="card mb-4">
-					<div class="card-header bg-info text-white fw-bold">TIN MỚI
-						NHẤT</div>
+					<div class="card-header bg-info text-white fw-bold">TIN MỚI NHẤT</div>
 					<ul class="list-group list-group-flush">
 						<c:forEach var="ln" items="${latestNews}">
 						<a href="${pageContext.request.contextPath}/reader/detail?id=${ln.id}"
@@ -125,6 +124,18 @@
 						</c:forEach>
 					</ul>
 				</div>
+
+				<c:if test="${not empty recentNews}">
+				<div class="card mb-4">
+					<div class="card-header bg-success text-white fw-bold">TIN ĐÃ XEM GẦN ĐÂY</div>
+					<ul class="list-group list-group-flush">
+						<c:forEach var="rn" items="${recentNews}">
+						<a href="${pageContext.request.contextPath}/reader/detail?id=${rn.id}"
+							class="list-group-item list-group-item-action">${rn.title}</a>
+						</c:forEach>
+					</ul>
+				</div>
+				</c:if>
 			</div>
 
 			<!-- Main Content Area -->

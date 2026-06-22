@@ -88,7 +88,9 @@ public class NewsManagerServlet extends HttpServlet {
         try {
             if ("/admin/news/insert".equals(path)) {
                 News news = new News();
-                news.setId(req.getParameter("id"));
+                // Tự động tạo mã bản tin
+                String newId = "NEWS" + System.currentTimeMillis();
+                news.setId(newId);
                 news.setTitle(req.getParameter("title"));
                 news.setContent(req.getParameter("content"));
                 news.setCategoryId(req.getParameter("categoryId"));
@@ -108,10 +110,22 @@ public class NewsManagerServlet extends HttpServlet {
                 } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
                     news.setImage(imageUrl);
                 } else {
-                    news.setImage("https://images.unsplash.com/photo-1508921340878-ba53e1f016ec?w=800&q=80"); // Ảnh mặc định
+                    session.setAttribute("error", "Bắt buộc phải có hình ảnh (chọn tệp hoặc dán link) khi thêm bài viết!");
+                    resp.sendRedirect(req.getContextPath() + "/admin/news");
+                    return;
                 }
                 
-                news.setViewCount(0);
+                // Lấy số lượt xem ban đầu do người dùng nhập (nếu có)
+                String viewCountStr = req.getParameter("viewCount");
+                int initialViews = 0;
+                if(viewCountStr != null && !viewCountStr.isEmpty()) {
+                    try {
+                        initialViews = Integer.parseInt(viewCountStr);
+                    } catch (NumberFormatException e) {
+                        initialViews = 0;
+                    }
+                }
+                news.setViewCount(initialViews);
                 news.setPostedDate(new Date());
                 news.setHome(req.getParameter("home") != null);
                 
@@ -126,12 +140,8 @@ public class NewsManagerServlet extends HttpServlet {
                     news.setStatus(1); // Phóng viên tạo thì mặc định Chờ duyệt
                 }
                 
-                if (newsDAO.findById(news.getId()) != null) {
-                    session.setAttribute("error", "Mã bản tin này đã tồn tại! Vui lòng chọn mã khác.");
-                } else {
-                    newsDAO.insert(news);
-                    session.setAttribute("message", "Thêm bản tin thành công.");
-                }
+                newsDAO.insert(news);
+                session.setAttribute("message", "Thêm bản tin thành công.");
             } else if ("/admin/news/update".equals(path)) {
                 String id = req.getParameter("id");
                 News news = newsDAO.findById(id);

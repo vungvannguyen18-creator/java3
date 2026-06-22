@@ -1,7 +1,6 @@
 package com.abcnews.dao;
 
 import com.abcnews.model.Comment;
-import com.abcnews.model.Favorite;
 import com.abcnews.util.XJdbc;
 import java.sql.ResultSet;
 import java.util.ArrayList;

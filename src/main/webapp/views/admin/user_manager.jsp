@@ -28,7 +28,7 @@
 			<div class="row mb-3">
 				<div class="col-md-6">
 					<label class="form-label">Mã Đăng Nhập (ID)</label> <input type="text"
-						class="form-control" name="id" required>
+						class="form-control" name="id" id="userIdInput" placeholder="Tự động tạo khi lưu" readonly>
 				</div>
 				<div class="col-md-6">
 					<label class="form-label">Mật khẩu</label>

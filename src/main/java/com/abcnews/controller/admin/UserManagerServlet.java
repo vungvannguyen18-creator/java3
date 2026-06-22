@@ -79,9 +79,11 @@ public class UserManagerServlet extends HttpServlet {
                 }
 
                 if ("/admin/user/insert".equals(path)) {
-                    if (userDAO.findById(user.getId()) != null) {
-                        session.setAttribute("error", "Mã đăng nhập này đã tồn tại! Vui lòng chọn mã khác.");
-                    } else if (userDAO.findByEmail(user.getEmail()) != null) {
+                    // Tự động tạo mã đăng nhập
+                    String newId = "USR" + System.currentTimeMillis();
+                    user.setId(newId);
+
+                    if (userDAO.findByEmail(user.getEmail()) != null) {
                         session.setAttribute("error", "Email này đã được sử dụng! Vui lòng nhập Email khác.");
                     } else {
                         userDAO.insert(user);

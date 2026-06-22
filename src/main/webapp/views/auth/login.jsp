@@ -37,12 +37,11 @@ body {
 				</c:if>
 				<form action="${pageContext.request.contextPath}/auth/login" method="POST">
 					<div class="mb-3">
-						<label for="username" class="form-label">Tên đăng nhập /
-							Mã ĐN</label>
+						<label for="email" class="form-label">Địa chỉ Email</label>
 						<div class="input-group">
-							<span class="input-group-text"><i class="bi bi-person"></i></span>
-							<input type="text" class="form-control" id="username"
-								name="username" required>
+							<span class="input-group-text"><i class="bi bi-envelope"></i></span>
+							<input type="email" class="form-control" id="email"
+								name="email" required>
 						</div>
 					</div>
 					<div class="mb-3">

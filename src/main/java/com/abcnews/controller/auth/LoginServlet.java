@@ -24,10 +24,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
-        String id = req.getParameter("username"); // name='username' in form maps to 'Id'
+        String email = req.getParameter("email");
         String password = req.getParameter("password");
         
-        User user = userDAO.login(id, password);
+        User user = userDAO.loginByEmail(email, password);
         
         if (user != null) {
             if (user.getRole() == -1) {
@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
         } else {
-            req.setAttribute("error", "Sai mã đăng nhập hoặc mật khẩu!");
+            req.setAttribute("error", "Email hoặc mật khẩu không đúng!");
             req.getRequestDispatcher("/views/auth/login.jsp").forward(req, resp);
         }
     }

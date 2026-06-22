@@ -25,7 +25,7 @@
 			<div class="row mb-3">
 				<div class="col-md-4">
 					<label class="form-label">Mã bản tin</label> <input type="text"
-						class="form-control" name="id" placeholder="Nhập mã bản tin...">
+						class="form-control" name="id" id="newsIdInput" placeholder="Tự động tạo khi lưu" readonly>
 				</div>
 				<div class="col-md-8">
 					<label class="form-label">Tiêu đề</label> <input type="text"
@@ -49,13 +49,17 @@
 						<input type="text" class="form-control" name="imageUrl" placeholder="Hoặc dán Link URL ảnh...">
 					</div>
 				</div>
-				<div class="col-md-4 mt-4 d-flex align-items-center">
+				<div class="col-md-3 mt-4 d-flex align-items-center">
 					<div class="form-check me-3">
 						<input class="form-check-input" type="checkbox" name="home"
 							id="homeCheck" value="true"> <label
 							class="form-check-label" for="homeCheck">Hiển thị trang
 							nhất</label>
 					</div>
+				</div>
+				<div class="col-md-2">
+					<label class="form-label">Lượt xem</label>
+					<input type="number" class="form-control" name="viewCount" placeholder="0" value="0" min="0">
 				</div>
 			</div>
 
@@ -78,7 +82,7 @@
 			</div>
 
 			<div>
-				<button type="submit" formaction="${pageContext.request.contextPath}/admin/news/insert" class="btn btn-primary">
+				<button type="submit" formaction="${pageContext.request.contextPath}/admin/news/insert" class="btn btn-primary" onclick="return validateImage()">
 					<i class="bi bi-plus-circle"></i> Thêm
 				</button>
 				<button type="submit" formaction="${pageContext.request.contextPath}/admin/news/update" class="btn btn-warning text-white">
@@ -105,7 +109,7 @@
 					<tr>
 						<th>Mã tin</th>
 						<th>Tiêu đề</th>
-						<th>Mã Loại tin</th>
+						<th>Loại tin</th>
 						<th>Lượt xem</th>
 						<th>Tác giả</th>
 						<th>Trạng thái</th>
@@ -118,7 +122,11 @@
 					<tr>
 						<td>${item.id}</td>
 						<td>${item.title}</td>
-						<td>${item.categoryId}</td>
+						<td>
+							<c:forEach var="c" items="${categories}">
+								<c:if test="${c.id == item.categoryId}">${c.name}</c:if>
+							</c:forEach>
+						</td>
 						<td>${item.viewCount}</td>
 						<td>${item.author}</td>
 						<td>
@@ -137,6 +145,7 @@
 								data-content="<c:out value='${item.content}'/>"
 								data-home="${item.home}"
 								data-status="${item.status}" 
+								data-viewcount="${item.viewCount}"
 								onclick="editNews(this)"><i class="bi bi-pencil"></i></button>
 							<form action="${pageContext.request.contextPath}/admin/news/delete" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tin này?');">
 								<input type="hidden" name="id" value="${item.id}">
@@ -151,11 +160,16 @@
 	</div>
 </div>
 
-<!-- Thêm CKEditor 4 -->
-<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 <script>
-    // Khởi tạo CKEditor
-    CKEDITOR.replace('contentEditor');
+    function validateImage() {
+        var fileInput = document.querySelector('input[name="image"]').value;
+        var urlInput = document.querySelector('input[name="imageUrl"]').value;
+        if (!fileInput && !urlInput.trim()) {
+            alert("Bắt buộc phải chọn tệp hoặc dán Link URL ảnh khi thêm bài viết!");
+            return false;
+        }
+        return true;
+    }
 
     function editNews(btn) {
         document.querySelector('input[name="id"]').value = btn.getAttribute('data-id');
@@ -163,11 +177,15 @@
         document.querySelector('input[name="title"]').value = btn.getAttribute('data-title');
         document.querySelector('select[name="categoryId"]').value = btn.getAttribute('data-category');
         
-        // Gán dữ liệu vào CKEditor
         var content = btn.getAttribute('data-content');
-        CKEDITOR.instances.contentEditor.setData(content);
+        document.getElementById('contentEditor').value = content;
         
         document.querySelector('input[name="home"]').checked = (btn.getAttribute('data-home') === 'true');
+        
+        var viewCountInput = document.querySelector('input[name="viewCount"]');
+        if (viewCountInput) {
+            viewCountInput.value = btn.getAttribute('data-viewcount') || 0;
+        }
         
         var statusSelect = document.querySelector('select[name="status"]');
         if (statusSelect) {

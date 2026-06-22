@@ -49,6 +49,22 @@ public class UserDAO {
         return null;
     }
 
+    public User loginByEmail(String email, String password) {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        ResultSet rs = null;
+        try {
+            rs = XJdbc.query(sql, email, password);
+            if (rs.next()) {
+                return readFromResultSet(rs);
+            }
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+        } finally {
+            if (rs != null) try { rs.getStatement().getConnection().close(); } catch(Exception ex) {}
+        }
+        return null;
+    }
+
     public User findById(String id) {
         String sql = "SELECT * FROM users WHERE id = ?";
         ResultSet rs = null;
