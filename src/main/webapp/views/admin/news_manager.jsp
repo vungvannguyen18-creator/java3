@@ -49,17 +49,13 @@
 						<input type="text" class="form-control" name="imageUrl" placeholder="Hoặc dán Link URL ảnh...">
 					</div>
 				</div>
-				<div class="col-md-3 mt-4 d-flex align-items-center">
+				<div class="col-md-4 mt-4 d-flex align-items-center">
 					<div class="form-check me-3">
 						<input class="form-check-input" type="checkbox" name="home"
 							id="homeCheck" value="true"> <label
 							class="form-check-label" for="homeCheck">Hiển thị trang
 							nhất</label>
 					</div>
-				</div>
-				<div class="col-md-2">
-					<label class="form-label">Lượt xem</label>
-					<input type="number" class="form-control" name="viewCount" placeholder="0" value="0" min="0">
 				</div>
 			</div>
 
@@ -145,7 +141,6 @@
 								data-content="<c:out value='${item.content}'/>"
 								data-home="${item.home}"
 								data-status="${item.status}" 
-								data-viewcount="${item.viewCount}"
 								onclick="editNews(this)"><i class="bi bi-pencil"></i></button>
 							<form action="${pageContext.request.contextPath}/admin/news/delete" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tin này?');">
 								<input type="hidden" name="id" value="${item.id}">
@@ -181,11 +176,6 @@
         document.getElementById('contentEditor').value = content;
         
         document.querySelector('input[name="home"]').checked = (btn.getAttribute('data-home') === 'true');
-        
-        var viewCountInput = document.querySelector('input[name="viewCount"]');
-        if (viewCountInput) {
-            viewCountInput.value = btn.getAttribute('data-viewcount') || 0;
-        }
         
         var statusSelect = document.querySelector('select[name="status"]');
         if (statusSelect) {

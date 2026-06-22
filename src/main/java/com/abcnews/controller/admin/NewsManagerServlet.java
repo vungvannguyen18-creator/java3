@@ -115,17 +115,7 @@ public class NewsManagerServlet extends HttpServlet {
                     return;
                 }
                 
-                // Lấy số lượt xem ban đầu do người dùng nhập (nếu có)
-                String viewCountStr = req.getParameter("viewCount");
-                int initialViews = 0;
-                if(viewCountStr != null && !viewCountStr.isEmpty()) {
-                    try {
-                        initialViews = Integer.parseInt(viewCountStr);
-                    } catch (NumberFormatException e) {
-                        initialViews = 0;
-                    }
-                }
-                news.setViewCount(initialViews);
+                news.setViewCount(0);
                 news.setPostedDate(new Date());
                 news.setHome(req.getParameter("home") != null);
                 
